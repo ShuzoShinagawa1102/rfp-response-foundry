@@ -88,7 +88,7 @@ src/
 
 | 項目 | 技術 |
 |------|------|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 15 (App Router) |
 | Language | TypeScript 5 |
 | Styling | Tailwind CSS 3 |
 | State | React useState / useEffect |

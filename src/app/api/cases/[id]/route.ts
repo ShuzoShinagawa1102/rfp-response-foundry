@@ -5,9 +5,10 @@ import { CaseStatus } from '@/lib/types';
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const rfpCase = getCase(params.id);
+  const { id } = await params;
+  const rfpCase = getCase(id);
   if (!rfpCase) {
     return NextResponse.json({ error: '案件が見つかりません' }, { status: 404 });
   }
@@ -18,9 +19,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const rfpCase = getCase(params.id);
+  const { id } = await params;
+  const rfpCase = getCase(id);
   if (!rfpCase) {
     return NextResponse.json({ error: '案件が見つかりません' }, { status: 404 });
   }
@@ -88,7 +90,7 @@ export async function PATCH(
     }
   }
 
-  const updated = updateCase(params.id, updates, auditActor, auditAction, auditDetail || '更新しました');
+  const updated = updateCase(id, updates, auditActor, auditAction, auditDetail || '更新しました');
   if (!updated) {
     return NextResponse.json({ error: '更新に失敗しました' }, { status: 500 });
   }

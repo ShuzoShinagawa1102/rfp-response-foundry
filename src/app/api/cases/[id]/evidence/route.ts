@@ -3,9 +3,10 @@ import { getCase, addEvidence } from '@/lib/store';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const rfpCase = getCase(params.id);
+  const { id } = await params;
+  const rfpCase = getCase(id);
   if (!rfpCase) {
     return NextResponse.json({ error: '案件が見つかりません' }, { status: 404 });
   }
@@ -26,7 +27,7 @@ export async function POST(
     return NextResponse.json({ error: '要件IDが存在しません' }, { status: 400 });
   }
 
-  const updated = addEvidence(params.id, { requirementId, name, validUntil });
+  const updated = addEvidence(id, { requirementId, name, validUntil });
   if (!updated) {
     return NextResponse.json({ error: '証拠追加に失敗しました' }, { status: 500 });
   }

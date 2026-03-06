@@ -4,9 +4,10 @@ import { computeDecisionRecommendation } from '@/lib/rules';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const rfpCase = getCase(params.id);
+  const { id } = await params;
+  const rfpCase = getCase(id);
   if (!rfpCase) {
     return NextResponse.json({ error: '案件が見つかりません' }, { status: 404 });
   }
@@ -25,7 +26,7 @@ export async function POST(
   const newStatus = outcome === 'Approved' ? 'Approved' : 'Rejected';
 
   const updated = updateCase(
-    params.id,
+    id,
     {
       status: newStatus,
       decision: {
