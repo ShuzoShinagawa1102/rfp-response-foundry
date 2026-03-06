@@ -119,6 +119,17 @@ export default function CaseDetailPage() {
     setExceptionReason('');
   }
 
+  function closeEvidenceModal() {
+    setEvidenceModal(null);
+    setEvidenceName('');
+    setEvidenceValidUntil('');
+  }
+
+  function closeExceptionModal() {
+    setExceptionModal(false);
+    setExceptionReason('');
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -459,7 +470,7 @@ export default function CaseDetailPage() {
                 {actionLoading ? '追加中...' : '追加する'}
               </button>
               <button
-                onClick={() => { setEvidenceModal(null); setEvidenceName(''); setEvidenceValidUntil(''); }}
+                onClick={closeEvidenceModal}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 キャンセル
@@ -495,7 +506,7 @@ export default function CaseDetailPage() {
                 {actionLoading ? '処理中...' : '例外昇格する'}
               </button>
               <button
-                onClick={() => { setExceptionModal(false); setExceptionReason(''); }}
+                onClick={closeExceptionModal}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 キャンセル

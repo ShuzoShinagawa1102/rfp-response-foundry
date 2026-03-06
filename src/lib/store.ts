@@ -337,16 +337,20 @@ const seedCases: RfpCase[] = [
   },
 ];
 
+// Next.js hot-reloads modules in development, which would reset module-level
+// variables on every file save.  Attaching the store to `globalThis` ensures
+// the in-memory data survives hot-reload cycles while still being initialised
+// only once.  TypeScript's `declare global` augmentation requires `var`.
 declare global {
   // eslint-disable-next-line no-var
   var __rfpStore: RfpCase[] | undefined;
 }
 
 function getStore(): RfpCase[] {
-  if (!global.__rfpStore) {
-    global.__rfpStore = JSON.parse(JSON.stringify(seedCases)) as RfpCase[];
+  if (!globalThis.__rfpStore) {
+    globalThis.__rfpStore = JSON.parse(JSON.stringify(seedCases)) as RfpCase[];
   }
-  return global.__rfpStore;
+  return globalThis.__rfpStore;
 }
 
 export function getCases(): RfpCase[] {
